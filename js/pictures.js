@@ -10,16 +10,42 @@ var COMMENTS = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
+/**
+ * Получение случайного числа.
+ * @param {number} min - Минимальное значение.
+ * @param {number} max - Максимальное значение.
+ * @return {number} Сгенерированное число
+ */
 var getRandomNumber = function (min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
+  return Math.floor(Math.random() * (max + 1 - min)) + min;
 }
 
+/**
+ * Получение случайного элемнта массива.
+ * @param {array} array - Массив для поиска элемента
+ * @return {*} - случайный элемент массива
+ */
+var getRandomValue = function (array) {
+  return array[getRandomNumber(0, array.length - 1)];
+}
+
+/**
+ * Получение случайного числа комментариев.
+ * @param {array} comments - Массив комментариев.
+ * @return {array} Сгенерированное массив комментариев
+ */
 var getComments = function (comments) {
-  var commentsLength = comments.length;
-  var commentsCount = getRandomNumber(1, 3);
-  return commentsCount;
+  if (getRandomNumber(0, 1)) {
+    return [getRandomValue(comments)]
+  }
+  return [getRandomValue(comments), getRandomValue(comments)];
 }
 
+/**
+ * Генерирование фотографий.
+ * @param {number} photosCount - Число фотографий.
+ * @return {number} Сгенерированное число
+ */
 var generatePhotos = function (photosCount) {
   var photos = [];
   for (var i = 0; i < photosCount; i++) {
@@ -36,7 +62,7 @@ var generatePhotos = function (photosCount) {
 var renderPhoto = function (photo) {
   var pictureTemplate = document.querySelector('#picture-template').content.cloneNode(true);
   pictureTemplate.querySelector('img').src = photo.url;
-  pictureTemplate.querySelector('.picture-comments').textContent = photo.comments;
+  pictureTemplate.querySelector('.picture-comments').textContent = photo.comments.length;
   pictureTemplate.querySelector('.picture-likes').textContent = photo.likes;
 
   return pictureTemplate;
@@ -53,4 +79,12 @@ var renderPhotos = function (photos) {
   picturesEl.appendChild(fragment);
 }
 
-renderPhotos(generatePhotos(PHOTOS_COUNT));
+var photos = generatePhotos(PHOTOS_COUNT);
+renderPhotos(photos);
+
+var galleryOverlayEl = document.querySelector('.gallery-overlay');
+galleryOverlayEl.classList.remove('hidden');
+
+galleryOverlayEl.querySelector('.gallery-overlay-image').src = photos[0].url;
+galleryOverlayEl.querySelector('.likes-count').textContent = photos[0].likes;
+galleryOverlayEl.querySelector('.comments-count').textContent = photos[0].comments.length;
