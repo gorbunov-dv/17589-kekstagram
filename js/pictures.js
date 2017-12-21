@@ -1,6 +1,7 @@
 'use strict';
 
 var PHOTOS_COUNT = 25;
+var ESC_KEYCODE = 23;
 var COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -82,9 +83,40 @@ var renderPhotos = function (photos) {
 var photos = generatePhotos(PHOTOS_COUNT);
 renderPhotos(photos);
 
-var galleryOverlayEl = document.querySelector('.gallery-overlay');
-galleryOverlayEl.classList.remove('hidden');
+/**
+ * Показывает фото в полноэкранном режиме
+ * @param {element} el - текущий элемент, по которому кликнули
+ */
+var showGalleryOverlay = function (el) {
+  var galleryOverlayEl = document.querySelector('.gallery-overlay');
+  galleryOverlayEl.classList.remove('hidden');
 
-galleryOverlayEl.querySelector('.gallery-overlay-image').src = photos[0].url;
-galleryOverlayEl.querySelector('.likes-count').textContent = photos[0].likes;
-galleryOverlayEl.querySelector('.comments-count').textContent = photos[0].comments.length;
+  galleryOverlayEl.querySelector('.gallery-overlay-image').src = el.querySelector('img').src;
+  galleryOverlayEl.querySelector('.likes-count').textContent = photos[0].likes;
+  galleryOverlayEl.querySelector('.comments-count').textContent = photos[0].comments.length;
+
+  var galleryOverlayCloseEl = galleryOverlayEl.querySelector('.gallery-overlay-close');
+  galleryOverlayCloseEl.tabindex = 1;
+  galleryOverlayCloseEl.addEventListener('click', function () {
+    galleryOverlayEl.classList.add('hidden');
+  });
+  document.addEventListener('keydown', function (evt) {
+    if (evt.kwycode === ESC_KEYCODE) {
+      galleryOverlayEl.classList.add('hidden');
+    }
+  })
+};
+
+var onClickPicture = function (evt) {
+  evt.preventDefault();
+  showGalleryOverlay(evt.currentTarget);
+};
+
+var pictureElements = document.querySelectorAll('.picture');
+
+for (var i = 0; i < pictureElements.length; i++) {
+  pictureElements[i].addEventListener('click', onClickPicture);
+}
+// нужно найти то по чему кликаем. Делегирование 92 стр
+//
+//
