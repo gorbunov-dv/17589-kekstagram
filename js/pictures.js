@@ -15,14 +15,16 @@ var getRandomNumber = function (min, max) {
 }
 
 var getComments = function (comments) {
-  return comments[1];
+  var commentsLength = comments.length;
+  var commentsCount = getRandomNumber(1, 3);
+  return commentsCount;
 }
 
 var generatePhotos = function (photosCount) {
   var photos = [];
   for (var i = 0; i < photosCount; i++) {
     photos[i] = {
-      url: 'photos/' + i + 1 + '.jpg',
+      url: 'photos/' + (i + 1) + '.jpg',
       likes: getRandomNumber(15, 200),
       comments: getComments(COMMENTS)
     }
@@ -34,7 +36,7 @@ var generatePhotos = function (photosCount) {
 var renderPhoto = function (photo) {
   var pictureTemplate = document.querySelector('#picture-template').content.cloneNode(true);
   pictureTemplate.querySelector('img').src = photo.url;
-  pictureTemplate.querySelector('.picture-comments').textContent = photo.comments.length;
+  pictureTemplate.querySelector('.picture-comments').textContent = photo.comments;
   pictureTemplate.querySelector('.picture-likes').textContent = photo.likes;
 
   return pictureTemplate;
