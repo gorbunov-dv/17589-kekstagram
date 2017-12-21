@@ -18,7 +18,7 @@ var COMMENTS = [
  */
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max + 1 - min)) + min;
-}
+};
 
 /**
  * Получение случайного элемнта массива.
@@ -27,7 +27,7 @@ var getRandomNumber = function (min, max) {
  */
 var getRandomValue = function (array) {
   return array[getRandomNumber(0, array.length - 1)];
-}
+};
 
 /**
  * Получение случайного числа комментариев.
@@ -36,10 +36,10 @@ var getRandomValue = function (array) {
  */
 var getComments = function (comments) {
   if (getRandomNumber(0, 1)) {
-    return [getRandomValue(comments)]
+    return [getRandomValue(comments)];
   }
   return [getRandomValue(comments), getRandomValue(comments)];
-}
+};
 
 /**
  * Генерирование фотографий.
@@ -53,11 +53,11 @@ var generatePhotos = function (photosCount) {
       url: 'photos/' + (i + 1) + '.jpg',
       likes: getRandomNumber(15, 200),
       comments: getComments(COMMENTS)
-    }
+    };
   }
 
   return photos;
-}
+};
 
 var renderPhoto = function (photo) {
   var pictureTemplate = document.querySelector('#picture-template').content.cloneNode(true);
@@ -66,7 +66,7 @@ var renderPhoto = function (photo) {
   pictureTemplate.querySelector('.picture-likes').textContent = photo.likes;
 
   return pictureTemplate;
-}
+};
 
 var renderPhotos = function (photos) {
   var picturesEl = document.querySelector('.pictures');
@@ -77,7 +77,7 @@ var renderPhotos = function (photos) {
   }
 
   picturesEl.appendChild(fragment);
-}
+};
 
 var photos = generatePhotos(PHOTOS_COUNT);
 renderPhotos(photos);
